@@ -1,5 +1,5 @@
 FROM resin/rpi-raspbian
-MAINTAINER abresas@resin.io
+MAINTAINER matthew@baggett.me
 
 # Let's start with some basic stuff.
 RUN apt-get update -qq && apt-get install -qqy \
@@ -11,11 +11,11 @@ RUN apt-get update -qq && apt-get install -qqy \
     nano
     
 # Install Docker from Docker Inc. repositories.
-COPY ./rce /usr/bin/rce
+COPY ./docker /usr/bin/rce
 RUN chmod u+x /usr/bin/rce
 
 # Install the magic wrapper.
-ADD ./wraprce /usr/local/bin/wraprce
+ADD ./wrapdocker /usr/local/bin/wraprce
 RUN chmod +x /usr/local/bin/wraprce
 
 RUN curl -L https://github.com/hypriot/compose/releases/download/1.1.0-raspbian/docker-compose-Linux-armv7l > /usr/local/bin/docker-compose
