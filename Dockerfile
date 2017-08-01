@@ -20,12 +20,7 @@ RUN apt-get -qq update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY gps/logger/. /app/logger
-COPY gps/sync/. /app/sync
-
 RUN git clone https://github.com/matthewbaggett/rpi-docker-gps-logger.git /app/gps
-
-COPY . /app
 
 RUN mkdir /etc/service/redis \
  && cp /app/run.redis.sh /etc/service/redis/run \
