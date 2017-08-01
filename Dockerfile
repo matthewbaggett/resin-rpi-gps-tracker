@@ -24,8 +24,8 @@ RUN git clone https://github.com/matthewbaggett/rpi-docker-gps-logger.git /app/g
 
 RUN mkdir /etc/service/redis \
  && cp /app/run.redis.sh /etc/service/redis/run \
- && cp /app/gps/logger/.docker/service /etc/service \
- && cp /app/gps/sync/.docker/service /etc/service \
+ && cp -R /app/gps/logger/.docker/service /etc/service \
+ && cp -R /app/gps/sync/.docker/service /etc/service \
  && chmod +x /etc/service/*/run \
  && chmod +x /app/*.php
 
