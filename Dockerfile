@@ -1,34 +1,35 @@
-FROM resin/rpi-raspbian
-MAINTAINER matthew@baggett.me
+FROM gone/php-arm:cli
+RUN apt-get -qq update && \
+    apt-get -yq install --no-install-recommends \
+        build-essential \
+        php-dev \
+        php-redis \
+        redis-server \
+        libhiredis-dev && \
+    cd /tmp && \
+    git clone https://github.com/nrk/phpiredis.git && \
+    cd phpiredis && \
+    phpize && \
+    ./configure --enable-phpiredis && \
+    make && \
+    make install && \
+    echo "extension=phpiredis.so" > /etc/php/7.0/cli/php.ini && \
+    cd - && \
+    apt remove -y build-essential && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Let's start with some basic stuff.
-RUN apt-get update -qq && apt-get install -qqy \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    lxc \
-    iptables \
-    nano
-    
-# Install Docker from Docker Inc. repositories.
-COPY ./docker /usr/bin/rce
-RUN chmod u+x /usr/bin/rce
+COPY gps/logger/. /app/logger
+COPY gps/sync/. /app/sync
 
-# Install the magic wrapper.
-ADD ./wrapdocker /usr/local/bin/wraprce
-RUN chmod +x /usr/local/bin/wraprce
+RUN mkdir /etc/service/redis
+COPY run.redis.sh /etc/service/redis/run
+COPY gps/logger/.docker/service /etc/service
+COPY gps/sync/.docker/service /etc/service
+RUN chmod +x /etc/service/*/run \
+ && chmod +x /app/*.php
 
-# Install Docker Compose
-RUN echo "deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ jessie main" | tee /etc/apt/sources.list.d/hypriot.list
-RUN apt-get update -qq && apt-get install -qqy docker-compose
+RUN sed -i "s/\/app/\/app\/logger/g" /etc/service/push-to-redis/run
+RUN sed -i "s/\/app/\/app\/sync/g" /etc/service/sync/run
 
-RUN echo "#!/bin/bash\nDOCKER_HOST=unix:///var/run/rce.sock /usr/local/bin/docker-compose $@" > /usr/bin/docker-compose
-RUN chmod +x /usr/bin/docker-compose
-
-RUN mkdir /app
-COPY ./docker-compose.yml /app/docker-compose.yml
-WORKDIR /app
-
-# Define additional metadata for our image.
-VOLUME /var/lib/rce
-CMD ["wraprce"]
