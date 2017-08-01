@@ -18,8 +18,9 @@ RUN chmod u+x /usr/bin/rce
 ADD ./wrapdocker /usr/local/bin/wraprce
 RUN chmod +x /usr/local/bin/wraprce
 
-RUN curl -L https://github.com/hypriot/compose/releases/download/1.1.0-raspbian/docker-compose-Linux-armv7l > /usr/local/bin/docker-compose
-RUN chmod +x /usr/local/bin/docker-compose
+# Install Docker Compose
+RUN echo "deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ jessie main" | tee /etc/apt/sources.list.d/hypriot.list
+RUN apt-get update -qq && apt-get install -qqy docker-compose
 
 RUN echo "#!/bin/bash\nDOCKER_HOST=unix:///var/run/rce.sock /usr/local/bin/docker-compose $@" > /usr/bin/docker-compose
 RUN chmod +x /usr/bin/docker-compose
