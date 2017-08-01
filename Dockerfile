@@ -12,7 +12,7 @@ RUN apt-get update -qq && apt-get install -qqy \
     
 # Install Docker from Docker Inc. repositories.
 COPY ./rce /usr/bin/rce
-CHMOD u+x /usr/bin/rce
+RUN chmod u+x /usr/bin/rce
 
 # Install the magic wrapper.
 ADD ./wraprce /usr/local/bin/wraprce
