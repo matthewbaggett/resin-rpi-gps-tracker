@@ -20,15 +20,15 @@ RUN apt-get -qq update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN git clone https://github.com/matthewbaggett/rpi-docker-gps-logger.git /app/gps
+#RUN git clone https://github.com/matthewbaggett/rpi-docker-gps-logger.git /app/gps
 
 RUN mkdir /etc/service/redis \
  && cp /app/run.redis.sh /etc/service/redis/run \
  && cp -R /app/gps/logger/.docker/service /etc/service \
  && cp -R /app/gps/sync/.docker/service /etc/service \
  && chmod +x /etc/service/*/run \
- && chmod +x /app/*.php
-
-RUN sed -i "s/\/app/\/app\/logger/g" /etc/service/push-to-redis/run
-RUN sed -i "s/\/app/\/app\/sync/g" /etc/service/sync/run
+ && chmod +x /app/gps/logger/*.php \
+ && chmod +x /app/gps/sync/*.php \
+ && sed -i "s/\/app/\/app\/gps\/logger/g" /etc/service/push-to-redis/run \
+ && sed -i "s/\/app/\/app\/gps\/sync/g" /etc/service/sync/run
 
