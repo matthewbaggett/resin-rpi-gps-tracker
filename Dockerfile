@@ -26,6 +26,8 @@ RUN rm -Rf /app/gps \
 
 RUN mkdir /etc/service/redis \
  && cp /app/run.redis.sh /etc/service/redis/run \
+ && sed -i "s/dir.*/dir \/data\/redis/g" /etc/redis/redis.conf \
+ && cat /etc/redis/redis.conf | grep "dir "
  && mkdir /etc/service/gpsd \
  && cp /app/run.gpsd.sh /etc/service/gpsd/run \
  && cp -R /app/gps/logger/.docker/service/* /etc/service \
