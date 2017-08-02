@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-/usr/sbin/gpsd -N -n -G -D2 /dev/ttyAMA0
+/usr/sbin/gpsd -N -n -G /dev/ttyAMA0
