@@ -36,4 +36,6 @@ RUN mkdir /etc/service/redis \
  && chmod +x /app/gps/sync/*.php \
  && sed -i "s/\/app/\/app\/gps\/logger/g" /etc/service/push-to-redis/run \
  && sed -i "s/\/app/\/app\/gps\/sync/g" /etc/service/sync/run
+ && cd /app/gps/logger && composer install && cd -
+ && cd /app/gps/sync && composer install && cd -
 
