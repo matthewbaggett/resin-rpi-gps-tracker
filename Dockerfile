@@ -25,8 +25,9 @@ RUN rm -Rf /app/gps \
 
 RUN mkdir /etc/service/redis \
  && cp /app/run.redis.sh /etc/service/redis/run \
- && cp -R /app/gps/logger/.docker/service /etc/service \
- && cp -R /app/gps/sync/.docker/service /etc/service \
+ && cp -R /app/gps/logger/.docker/service/* /etc/service \
+ && cp -R /app/gps/sync/.docker/service/* /etc/service \
+ && ls -lah /etc/service \
  && chmod +x /etc/service/*/run \
  && chmod +x /app/gps/logger/*.php \
  && chmod +x /app/gps/sync/*.php \
