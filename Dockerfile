@@ -5,6 +5,7 @@ RUN apt-get -qq update && \
         php-dev \
         php-redis \
         redis-server \
+        gpsd \
         libhiredis-dev && \
     cd /tmp && \
     git clone https://github.com/nrk/phpiredis.git && \
@@ -25,6 +26,8 @@ RUN rm -Rf /app/gps \
 
 RUN mkdir /etc/service/redis \
  && cp /app/run.redis.sh /etc/service/redis/run \
+ && mkdir /etc/service/gpsd \
+ && cp /app/run.gpsd.sh /etc/service/gpsd/run \
  && cp -R /app/gps/logger/.docker/service/* /etc/service \
  && cp -R /app/gps/sync/.docker/service/* /etc/service \
  && ls -lah /etc/service \
