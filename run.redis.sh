@@ -1,3 +1,3 @@
 #!/bin/bash
 mkdir /data/redis
-redis-server
+redis-server /etc/redis/redis.conf
