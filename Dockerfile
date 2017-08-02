@@ -20,7 +20,8 @@ RUN apt-get -qq update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-#RUN git clone https://github.com/matthewbaggett/rpi-docker-gps-logger.git /app/gps
+RUN rm -Rf /app/gps \
+ && git clone https://github.com/matthewbaggett/rpi-docker-gps-logger.git /app/gps
 
 RUN mkdir /etc/service/redis \
  && cp /app/run.redis.sh /etc/service/redis/run \
