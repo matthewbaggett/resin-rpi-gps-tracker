@@ -1,3 +1,3 @@
 #!/bin/bash
-mkdir /data/redis
+[ -d /data/redis ] || mkdir /data/redis
 redis-server /etc/redis/redis.conf
