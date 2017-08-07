@@ -21,8 +21,9 @@ RUN apt-get -qq update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN rm -Rf /app/gps \
+RUN rm -Rf /app/gps && /app/sync \
  && git clone https://github.com/matthewbaggett/rpi-docker-gps-logger.git /app/gps
+ && git clone git@github.com:goneio/redis-sync.git /app/sync
 
 RUN mkdir /etc/service/redis \
  && cp /app/run.redis.sh /etc/service/redis/run \
@@ -31,13 +32,13 @@ RUN mkdir /etc/service/redis \
  && mkdir /etc/service/gpsd \
  && cp /app/run.gpsd.sh /etc/service/gpsd/run \
  && cp -R /app/gps/logger/.docker/service/* /etc/service \
- && cp -R /app/gps/sync/.docker/service/* /etc/service \
+ && cp -R /app/sync/.docker/service/* /etc/service \
  && ls -lah /etc/service \
  && chmod +x /etc/service/*/run \
  && chmod +x /app/gps/logger/*.php \
- && chmod +x /app/gps/sync/*.php \
+ && chmod +x /app/sync/*.php \
  && sed -i "s/\/app/\/app\/gps\/logger/g" /etc/service/push-to-redis/run \
- && sed -i "s/\/app/\/app\/gps\/sync/g" /etc/service/sync/run \
+ && sed -i "s/\/app/\/app\/sync/g" /etc/service/sync/run \
  && cd /app/gps/logger && composer install && cd - \
- && cd /app/gps/sync && composer install && cd -
+ && cd /app/sync && composer install && cd -
 
