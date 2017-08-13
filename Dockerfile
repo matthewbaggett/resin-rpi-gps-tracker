@@ -21,6 +21,10 @@ RUN apt-get -qq update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN rm -Rf /app/gps && /app/sync \
+ && git clone git@github.com:matthewbaggett/rpi-docker-gps-logger.git /app/gps \
+ && git clone git@github.com:goneio/redis-sync.git /app/sync
+
 RUN mkdir /etc/service/redis \
  && cp /app/run.redis.sh /etc/service/redis/run \
  && sed -i "s/dir.*/dir \/data\/redis/g" /etc/redis/redis.conf \
