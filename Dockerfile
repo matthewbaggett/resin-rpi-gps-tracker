@@ -41,4 +41,3 @@ RUN mkdir /etc/service/redis \
  && cd /app/gps/logger && composer install && cd - \
  && cd /app/sync && composer install && cd -
 
-
