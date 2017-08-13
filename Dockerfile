@@ -21,7 +21,8 @@ RUN apt-get -qq update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN rm -Rf /app/gps && /app/sync \
+RUN ls -lah /app \
+ && rm -Rf /app/gps && /app/sync \
  && git clone git@github.com:matthewbaggett/rpi-docker-gps-logger.git /app/gps \
  && git clone git@github.com:goneio/redis-sync.git /app/sync
 
